@@ -1,0 +1,47 @@
+<!-- 
+    Connection Result Partial
+    Returned by: POST /api/regions/{id}/test
+    Swapped into: #result-{id}
+-->
+{% if result.success %}
+<div class="grid grid-cols-2 md:grid-cols-4 gap-2">
+    <!-- Latency -->
+    <div class="bg-slate-900 rounded-lg p-3">
+        <div class="text-xs text-slate-500">Latency</div>
+        <div class="text-xl font-bold 
+            {% if result.latency_ms < 50 %}text-emerald-400
+            {% elif result.latency_ms < 150 %}text-amber-400
+            {% else %}text-red-400{% endif %}">
+            {{ result.latency_ms }}ms
+        </div>
+    </div>
+    
+    <!-- Server IP -->
+    <div class="bg-slate-900 rounded-lg p-3">
+        <div class="text-xs text-slate-500">Server IP</div>
+        <div class="text-sm font-mono text-slate-300">{{ result.server_ip }}</div>
+    </div>
+    
+    <!-- Backend PID -->
+    <div class="bg-slate-900 rounded-lg p-3">
+        <div class="text-xs text-slate-500">Backend PID</div>
+        <div class="text-sm font-mono text-slate-300">{{ result.backend_pid }}</div>
+    </div>
+    
+    <!-- Port -->
+    <div class="bg-slate-900 rounded-lg p-3">
+        <div class="text-xs text-slate-500">PgBouncer Port</div>
+        <div class="text-sm font-mono text-slate-300">:{{ result.server_port }}</div>
+    </div>
+</div>
+
+{% if result.pg_version %}
+<div class="mt-2 text-xs text-slate-500">{{ result.pg_version }}</div>
+{% endif %}
+
+{% else %}
+<!-- Error state -->
+<div class="bg-red-900/30 border border-red-500/30 rounded-lg p-3">
+    <span class="text-red-400">❌ {{ result.error or 'Connection failed' }}</span>
+</div>
+{% endif %}
