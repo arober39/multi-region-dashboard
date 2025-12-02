@@ -1,27 +1,29 @@
 <!-- 
     Flag Panel Partial
-    Returned by: GET /api/flags
-    Swapped into: #flag-panel > div
+    Returned by: GET /api/flags or GET /api/flag-panel
+    Swapped into: #flag-panel
 -->
-<h3 class="font-semibold mb-3">🚩 LaunchDarkly Feature Flags</h3>
-<p class="text-xs text-slate-500 mb-3">Click a flag to toggle it (demo mode only)</p>
+<div>
+    <h3 class="font-semibold mb-3">🚩 LaunchDarkly Feature Flags</h3>
+    <p class="text-xs text-slate-500 mb-3">Click a flag to toggle it (demo mode only)</p>
 
-<div class="grid grid-cols-2 md:grid-cols-3 gap-2">
-    {% for flag_key, flag_value in flags.items() %}
-    <button 
-        hx-post="/api/flags/{{ flag_key }}/toggle"
-        hx-target="#flag-panel > div"
-        hx-swap="innerHTML"
-        class="p-3 rounded-lg text-left transition-all hover:scale-105
-            {% if flag_value %}bg-emerald-900/50 border border-emerald-500/50
-            {% else %}bg-red-900/30 border border-red-500/30{% endif %}"
-    >
-        <div class="text-xs text-slate-400 font-mono truncate">{{ flag_key }}</div>
-        <div class="font-medium mt-1 {% if flag_value %}text-emerald-400{% else %}text-red-400{% endif %}">
-            {% if flag_value is sameas true %}ON
-            {% elif flag_value is sameas false %}OFF
-            {% else %}{{ flag_value }}{% endif %}
-        </div>
-    </button>
-    {% endfor %}
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2">
+        {% for flag_key, flag_value in flags.items() %}
+        <button 
+            hx-post="/api/flags/{{ flag_key }}/toggle"
+            hx-target="#flag-panel"
+            hx-swap="innerHTML"
+            class="p-3 rounded-lg text-left transition-all hover:scale-105 bg-black border
+                {% if flag_value %}border-emerald-500/50
+                {% else %}border-gray-700{% endif %}"
+        >
+            <div class="text-xs text-gray-400 font-mono truncate">{{ flag_key }}</div>
+            <div class="font-medium mt-1 {% if flag_value %}text-emerald-400{% else %}text-gray-400{% endif %}">
+                {% if flag_value is sameas true %}ON
+                {% elif flag_value is sameas false %}OFF
+                {% else %}{{ flag_value }}{% endif %}
+            </div>
+        </button>
+        {% endfor %}
+    </div>
 </div>
