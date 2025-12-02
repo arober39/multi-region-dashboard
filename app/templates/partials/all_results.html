@@ -1,0 +1,82 @@
+<!-- 
+    All Results Partial
+    Returned by: POST /api/regions/test-all
+    Swapped into: #all-results
+-->
+<div class="bg-slate-800 rounded-xl p-4 mb-4">
+    <h3 class="font-semibold mb-3 flex items-center gap-2">
+        <span class="text-emerald-400">✓</span>
+        All Regions Tested (asyncio.gather)
+    </h3>
+    
+    <!-- Results Table -->
+    <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+            <thead>
+                <tr class="text-slate-400 text-left">
+                    <th class="pb-2">Rank</th>
+                    <th class="pb-2">Region</th>
+                    <th class="pb-2">Role</th>
+                    <th class="pb-2">Latency</th>
+                    <th class="pb-2">Server</th>
+                    <th class="pb-2">Status</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for region_id, result in results %}
+                <tr class="border-t border-slate-700">
+                    <td class="py-2">
+                        {% if loop.index == 1 %}🥇
+                        {% elif loop.index == 2 %}🥈
+                        {% elif loop.index == 3 %}🥉
+                        {% else %}#{{ loop.index }}{% endif %}
+                    </td>
+                    <td class="py-2">
+                        <div class="flex items-center gap-2">
+                            <div class="w-3 h-3 rounded-full" style="background:{{ regions[region_id].color }}"></div>
+                            {{ regions[region_id].name }}
+                        </div>
+                    </td>
+                    <td class="py-2">
+                        <span class="text-xs px-2 py-0.5 rounded
+                            {% if regions[region_id].role == 'PRIMARY' %}bg-amber-900 text-amber-300
+                            {% else %}bg-slate-700 text-slate-300{% endif %}">
+                            {{ regions[region_id].role }}
+                        </span>
+                    </td>
+                    <td class="py-2">
+                        {% if result.success %}
+                        <span class="font-mono font-medium
+                            {% if result.latency_ms < 50 %}text-emerald-400
+                            {% elif result.latency_ms < 150 %}text-amber-400
+                            {% else %}text-red-400{% endif %}">
+                            {{ result.latency_ms }}ms
+                        </span>
+                        {% else %}—{% endif %}
+                    </td>
+                    <td class="py-2 font-mono text-xs text-slate-400">
+                        {% if result.success %}{{ result.server_ip }}:{{ result.server_port }}{% else %}—{% endif %}
+                    </td>
+                    <td class="py-2">
+                        {% if result.success %}
+                        <span class="text-emerald-400">✓</span>
+                        {% else %}
+                        <span class="text-red-400">✗</span>
+                        {% endif %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Recommendation -->
+    {% if results %}
+    {% set winner = results[0] %}
+    <div class="mt-4 p-3 bg-emerald-900/30 border border-emerald-500/30 rounded-lg text-sm">
+        <span class="text-emerald-400 font-medium">⚡ Recommended:</span>
+        Route traffic to <strong>{{ regions[winner[0]].name }}</strong> 
+        ({{ winner[1].latency_ms }}ms)
+    </div>
+    {% endif %}
+</div>

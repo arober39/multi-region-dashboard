@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="min-h-screen">
+    <!-- Header -->
+    <header class="bg-white shadow-sm border-b">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+            <h1 class="text-3xl font-bold text-gray-900">Multi-Region Dashboard</h1>
+            <p class="text-gray-600 mt-1">Monitor and test database connections across regions</p>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <!-- Feature Flag Panel -->
+        <div class="mb-6">
+            <div 
+                id="flag-panel"
+                hx-get="/api/flag-panel"
+                hx-trigger="load, every 5s"
+                hx-swap="innerHTML"
+                class="bg-white rounded-lg shadow p-4"
+            >
+                <p class="text-gray-500">Loading feature flags...</p>
+            </div>
+        </div>
+
+        <!-- Region Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+            <!-- US East -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">US East</h2>
+                <div class="space-y-3">
+                    <button
+                        hx-get="/api/test-connection/us-east"
+                        hx-target="#us-east-result"
+                        hx-swap="innerHTML"
+                        class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                    >
+                        Test Connection
+                    </button>
+                    <button
+                        hx-get="/api/health/us-east"
+                        hx-target="#us-east-health"
+                        hx-swap="innerHTML"
+                        class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                    >
+                        Health Metrics
+                    </button>
+                    <button
+                        hx-post="/api/load-test/us-east"
+                        hx-target="#us-east-load"
+                        hx-swap="innerHTML"
+                        class="w-full bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
+                    >
+                        Load Test
+                    </button>
+                </div>
+                <div id="us-east-result" class="mt-4"></div>
+                <div id="us-east-health" class="mt-4"></div>
+                <div id="us-east-load" class="mt-4"></div>
+            </div>
+
+            <!-- EU West -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">EU West</h2>
+                <div class="space-y-3">
+                    <button
+                        hx-get="/api/test-connection/eu-west"
+                        hx-target="#eu-west-result"
+                        hx-swap="innerHTML"
+                        class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                    >
+                        Test Connection
+                    </button>
+                    <button
+                        hx-get="/api/health/eu-west"
+                        hx-target="#eu-west-health"
+                        hx-swap="innerHTML"
+                        class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                    >
+                        Health Metrics
+                    </button>
+                    <button
+                        hx-post="/api/load-test/eu-west"
+                        hx-target="#eu-west-load"
+                        hx-swap="innerHTML"
+                        class="w-full bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
+                    >
+                        Load Test
+                    </button>
+                </div>
+                <div id="eu-west-result" class="mt-4"></div>
+                <div id="eu-west-health" class="mt-4"></div>
+                <div id="eu-west-load" class="mt-4"></div>
+            </div>
+
+            <!-- Asia Pacific -->
+            <div class="bg-white rounded-lg shadow p-6">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4">Asia Pacific</h2>
+                <div class="space-y-3">
+                    <button
+                        hx-get="/api/test-connection/asia-pacific"
+                        hx-target="#asia-pacific-result"
+                        hx-swap="innerHTML"
+                        class="w-full bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+                    >
+                        Test Connection
+                    </button>
+                    <button
+                        hx-get="/api/health/asia-pacific"
+                        hx-target="#asia-pacific-health"
+                        hx-swap="innerHTML"
+                        class="w-full bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700 transition"
+                    >
+                        Health Metrics
+                    </button>
+                    <button
+                        hx-post="/api/load-test/asia-pacific"
+                        hx-target="#asia-pacific-load"
+                        hx-swap="innerHTML"
+                        class="w-full bg-purple-600 text-white px-4 py-2 rounded hover:bg-purple-700 transition"
+                    >
+                        Load Test
+                    </button>
+                </div>
+                <div id="asia-pacific-result" class="mt-4"></div>
+                <div id="asia-pacific-health" class="mt-4"></div>
+                <div id="asia-pacific-load" class="mt-4"></div>
+            </div>
+        </div>
+
+        <!-- All Results Summary -->
+        <div class="bg-white rounded-lg shadow p-6">
+            <h2 class="text-xl font-semibold text-gray-900 mb-4">All Regions Summary</h2>
+            <button
+                hx-get="/api/all-results"
+                hx-target="#all-results"
+                hx-swap="innerHTML"
+                class="bg-gray-600 text-white px-4 py-2 rounded hover:bg-gray-700 transition mb-4"
+            >
+                Refresh All
+            </button>
+            <div id="all-results"></div>
+        </div>
+    </main>
+</div>
+{% endblock %}
+
