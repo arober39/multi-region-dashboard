@@ -280,3 +280,40 @@ async def get_flags(request: Request):
         "request": request,
         "flags": get_demo_flags()
     })
+
+
+@router.get("/flag-panel")
+async def get_flag_panel(request: Request):
+    """Alias for /flags to match template expectations"""
+    return templates.TemplateResponse("partials/flag_panel.html", {
+        "request": request,
+        "flags": get_demo_flags()
+    })
+
+
+# =============================================================
+# COMPATIBILITY ROUTES (for template compatibility)
+# =============================================================
+
+@router.get("/test-connection/{region_id}")
+async def test_connection_get(region_id: str, request: Request):
+    """GET version of test connection endpoint"""
+    return await test_region(region_id, request)
+
+
+@router.get("/health/{region_id}")
+async def health_get(region_id: str, request: Request):
+    """GET version of health endpoint"""
+    return await region_health(region_id, request)
+
+
+@router.get("/all-results")
+async def all_results_get(request: Request):
+    """GET version of test all regions endpoint"""
+    return await test_all_regions(request)
+
+
+@router.post("/load-test/{region_id}")
+async def load_test_compat(region_id: str, request: Request):
+    """Compatibility route for /api/load-test/{region_id}"""
+    return await load_test(region_id, request)

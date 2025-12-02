@@ -9,7 +9,7 @@ from fastapi.responses import HTMLResponse
 from fastapi import Request
 
 from app.database import db_manager
-from app.feature_flags import feature_flags
+from app.feature_flags import feature_flags, init_launchdarkly, shutdown_launchdarkly
 from app.routers import pages, api
 
 
@@ -18,12 +18,13 @@ async def lifespan(app: FastAPI):
     """Lifespan context manager for startup and shutdown events."""
     # Startup
     print("Starting up...")
+    init_launchdarkly()
     await db_manager.initialize()
     yield
     # Shutdown
     print("Shutting down...")
     await db_manager.close()
-    feature_flags.close()
+    shutdown_launchdarkly()
 
 
 app = FastAPI(

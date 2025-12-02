@@ -2,6 +2,9 @@
 
 ![Multi Region Dashboard](multi_region_dashboard.png)
 
+## Demo
+<iframe width="560" height="315" src="https://youtu.be/7GTLmgFRHAA" frameborder="0" allowfullscreen></iframe>
+
 A FastAPI-based dashboard for monitoring and testing database connections across multiple regions (US-East, EU-West, Asia-Pacific) with LaunchDarkly feature flag integration.
 
 ## Features
